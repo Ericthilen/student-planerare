@@ -1,0 +1,157 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f6f8;
+    color: #1f2937;
+}
+
+button,
+input,
+select {
+    font: inherit
+}
+
+.app-container {
+    width: 90%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 40px 0;
+}
+
+.header {
+    margin-bottom: 30px;
+}
+
+.header h1 {
+    margin: 0 0 8px;
+    font-size: 36px;
+    color: #1d4ed8;
+}
+
+.header p {
+    margin: 0;
+    color: #64748b;
+}
+
+.student-section,
+.form-section,
+.tasks-section {
+    background-color: white;
+    border-radius: 10px;
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.student-section label,
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.student-section input {
+    width: 100%;
+    max-width: 400px;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 11px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+}
+
+input:focus,
+select:focus {
+    outline: 2px solid #93c5fd;
+    border-color: #2563eb;
+}
+
+.welcome-text {
+    margin: 15px 0 0;
+    color: #2563eb;
+    font-weight: bold;
+}
+
+.form-section h2,
+.tasks-section h2 {
+    margin-top: 0;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+.add-button {
+    margin-top: 20px;
+    padding: 11px 20px;
+    border: none;
+    border-radius: 6px;
+    background-color: #2563eb;
+    color: white;
+    cursor: pointer
+}
+
+.add-button:hover {
+    background-color: #1d4ed8
+}
+
+.tasks-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.tasks-heading span {
+    color: #64748b;
+}
+
+.empty-list {
+    text-align: center;
+    padding: 30px;
+    border: 2px dashed #cbd5e1
+    border-radius 8px;
+    color: #64748b;
+}
+
+.empty-list p {
+    margin: 5px;
+}
+
+@media (max-width: 600px) {
+    .app-container {
+        width: 94%;
+        padding: 20px 0;
+    }
+
+    .header h1 {
+        font-size: 28px;
+    }
+
+    .student-section,
+    .form-section,
+    .tasks-section {
+        padding: 18px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .add-button {
+        width: 100%;
+    }
+
+    .tasks-heading {
+        align-items: flex-start;
+        gap: 10px;
+        flex-direction: column;
+    }
+}
