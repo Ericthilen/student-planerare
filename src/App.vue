@@ -6,7 +6,46 @@ export default {
       taskName: '',
       course: '',
       deadline: '',
-      priority: "Medel"
+      priority: 'Medel',
+      tasks:[]
+    }
+  },
+
+  methods: {
+    addTask() {
+      if (
+        this.taskName === '' ||
+        this.course === '' ||
+        this.deadline === ''
+      ) {
+        return
+      }
+      const newTask = {
+        id: Date.now(),
+        name: this.taskName,
+        course: this.course,
+        deadline: this.deadline,
+        priority: this.priority,
+        completed: false
+      }
+
+      this.tasks.push(newTask)
+      this.taskName = ''
+      this.course = ''
+      this.deadline = ''
+      this.priority = 'Medel'
+    },
+
+    removeTask(id) {
+      this.tasks = this.tasks.filter(task => task.id !== id)
+    },
+
+    toggleTask(id) {
+      const task = this.tasks.find(task => task.id === id)
+
+      if (task) {
+        task.completed = !task.completed
+      }
     }
   }
 }
@@ -16,7 +55,7 @@ export default {
   <div class="app-container">
     <header class="header">
       <h1>Studentplaneraren</h1>
-      <p>Håll koll på dina skolluppgifter och deadliens.</p>
+      <p>Håll koll på dina skoluppgifter och deadlines.</p>
     </header>
 
     <main>
@@ -38,7 +77,7 @@ export default {
       <section class="form-section">
         <h2>Lägg till skoluppgift</h2>
 
-        <form>
+        <form @submit.prevent="addTask">
           <div class="form-grid">
             <div class="form-group">
               <label for="taskName">Uppgiftens namn:</label>
@@ -79,7 +118,7 @@ export default {
             </div>
           </div>
 
-          <button type="button" class="add-button">
+          <button type="submit" class="add-button">
             Lägg till uppgiften
           </button>
         </form>
@@ -88,12 +127,56 @@ export default {
       <section class="tasks-section">
         <div class="tasks-heading">
           <h2>Mina uppgifter</h2>
-          <span>0 uppgifter</span>
+          <span>{{ tasks.length }} uppgifter</span>
         </div>
 
-        <div class="empty-list">
-          <p>Du har inga skolluppgifter ännu</p>
+        <div v-if="tasks.length === 0" class="empty-list">
+          <p>Du har inga skoluppgifter ännu</p>
           <p>Lägg till din första uppgift ovan.</p>
+        </div>
+
+        <div v-else class="tasks-list">
+          <div
+          v-for="task in tasks"
+          :key="task.id"
+          class="task-card"
+          :class="{
+            completed: task.completed,
+            'priority-high': task.priority === 'Hög',
+            'priority-medium': task.priority === 'Medel',
+            'priority-low': task.priority === 'Låg'
+          }"
+          >
+          <h3>{{ task.name }}</h3>
+          <p>
+            <strong>Kurs:</strong> {{ task.course }}
+          </p>
+
+          <p>
+            <strong>Deadline:</strong> {{ task.deadline }}
+          </p>
+
+          <p>
+            <strong>Prioritet:</strong> {{ task.priority }}
+          </p>
+
+          <button
+          type="button"
+          class="complete-button"
+          @click="toggleTask(task.id)"
+          >
+            {{ task.completed ? 'Markera som ej klar' : 'Markera som klar' }}
+
+          </button>
+
+          <button
+          type="button"
+          class="delete-button"
+          @click="removeTask(task.id)"
+          >
+            Ta bort uppgiften
+          </button>
+          </div>
         </div>
       </section>
     </main>
