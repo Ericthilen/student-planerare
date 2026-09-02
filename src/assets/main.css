@@ -12,7 +12,7 @@ body {
 button,
 input,
 select {
-    font: inherit
+    font: inherit;
 }
 
 .app-container {
@@ -96,11 +96,11 @@ select:focus {
     border-radius: 6px;
     background-color: #2563eb;
     color: white;
-    cursor: pointer
+    cursor: pointer;
 }
 
 .add-button:hover {
-    background-color: #1d4ed8
+    background-color: #1d4ed8;
 }
 
 .tasks-heading {
@@ -116,13 +116,83 @@ select:focus {
 .empty-list {
     text-align: center;
     padding: 30px;
-    border: 2px dashed #cbd5e1
-    border-radius 8px;
+    border: 2px dashed #cbd5e1;
+    border-radius: 8px;
     color: #64748b;
 }
 
 .empty-list p {
     margin: 5px;
+}
+
+.tasks-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.task-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 18px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background-color: white;
+}
+
+.priority-high {
+    border-left: 6px solid #dc2626;
+}
+
+.priority-medium {
+    border-left: 6px solid #eab308;
+}
+
+.priority-low {
+    border-left: 6px solid #16a34a;
+}
+
+.task-card h3 {
+    margin: 0 0 10px;
+}
+
+.task-card p {
+    margin: 5px 0;
+}
+
+.completed {
+    opacity: 0.6;
+}
+
+.completed h3 {
+    text-decoration: line-through;
+}
+
+.complete-button {
+    padding: 9px 14px;
+    border: none;
+    border-radius: 6px;
+    background-color: #16a34a;
+    color: white;
+    cursor: pointer;
+}
+
+.complete-button:hover {
+    background-color: #15803d;
+}
+.delete-button {
+    padding: 9px 14px;
+    border: none;
+    border-radius: 6px;
+    background-color: #dc2626;
+    color: white;
+    cursor: pointer;
+}
+
+.delete-button:hover {
+    background-color: #b91c1c;
 }
 
 @media (max-width: 600px) {
@@ -153,5 +223,15 @@ select:focus {
         align-items: flex-start;
         gap: 10px;
         flex-direction: column;
+    }
+
+    .task-card {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .complete-button,
+    .delete-button {
+        width: 100%;
     }
 }
