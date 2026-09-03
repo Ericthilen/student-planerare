@@ -6,8 +6,23 @@ export default {
       taskName: '',
       course: '',
       deadline: '',
+      filter: 'Alla',
       priority: 'Medel',
       tasks:[]
+    }
+  },
+
+  computed: {
+    filteredTasks() {
+      if (this.filter === 'Klara') {
+        return this.tasks.filter(task => task.completed)
+      }
+
+      if (this.filter === 'Ej klara') {
+        return this.tasks.filter(task => !task.completed)
+      }
+
+      return this.tasks
     }
   },
 
@@ -130,14 +145,43 @@ export default {
           <span>{{ tasks.length }} uppgifter</span>
         </div>
 
-        <div v-if="tasks.length === 0" class="empty-list">
-          <p>Du har inga skoluppgifter ännu</p>
-          <p>Lägg till din första uppgift ovan.</p>
+        <div class="filter-buttons">
+          <button
+          type="button"
+          class="filter-button"
+          :class="{ active: filter === 'Alla' }"
+          @click="filter = 'Alla'"
+          >
+            Alla
+        </button>
+
+        <button
+        type="button"
+        class="filter-button"
+        :class="{ active: filter === 'Ej klara' }"
+        @click="filter = 'Ej klara'"
+        >
+          Ej klara
+        </button>
+
+        <button
+        type="button"
+        class="filter-button"
+        :class="{ active: filter === 'Klara' }"
+        @click="filter = 'Klara'"
+        >
+          Klara
+        </button>
+        </div>
+
+        <div v-if="filteredTasks.length === 0" class="empty-list">
+          <p>Inga uppgifter att visa.</p>
+          <p>Byt filter eller lägg till en ny uppgift.</p>
         </div>
 
         <div v-else class="tasks-list">
           <div
-          v-for="task in tasks"
+          v-for="task in filteredTasks"
           :key="task.id"
           class="task-card"
           :class="{
