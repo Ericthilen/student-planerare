@@ -7,22 +7,31 @@ export default {
       course: '',
       deadline: '',
       filter: 'Alla',
+      sortOrder: 'Tidigast',
       priority: 'Medel',
-      tasks:[]
+      tasks: []
     }
   },
 
   computed: {
     filteredTasks() {
+      let result = this.tasks
+
       if (this.filter === 'Klara') {
-        return this.tasks.filter(task => task.completed)
+        result = result.filter(task => task.completed)
       }
 
       if (this.filter === 'Ej klara') {
-        return this.tasks.filter(task => !task.completed)
+        result = result.filter(task => !task.completed)
       }
 
-      return this.tasks
+      return [...result].sort((a, b) => {
+        if (this.sortOrder === 'Tidigast') {
+          return new Date(a.deadline) - new Date(b.deadline)
+        }
+
+        return new Date(b.deadline) - new Date(a.deadline)
+      })
     }
   },
 
@@ -77,12 +86,7 @@ export default {
       <section class="student-section">
         <label for="studentName">Studentens namn:</label>
 
-        <input
-        id="studentName"
-        v-model="studentName"
-        type="text"
-        placeholder="Ange studentens namn"
-        />
+        <input id="studentName" v-model="studentName" type="text" placeholder="Ange studentens namn" />
 
         <p v-if="studentName" class="welcome-text">
           Hej {{ studentName }}! Här kan du planera dina skoluppgifter.
@@ -96,31 +100,17 @@ export default {
           <div class="form-grid">
             <div class="form-group">
               <label for="taskName">Uppgiftens namn:</label>
-              <input
-                id="taskName"
-                v-model="taskName"
-                type="text"
-                placeholder="Ange uppgiftens namn"
-              />
+              <input id="taskName" v-model="taskName" type="text" placeholder="Ange uppgiftens namn" />
             </div>
 
             <div class="form-group">
               <label for="course">Kurs:</label>
-              <input
-                id="course"
-                v-model="course"
-                type="text"
-                placeholder="Ange kurs"
-              />
+              <input id="course" v-model="course" type="text" placeholder="Ange kurs" />
             </div>
 
             <div class="form-group">
               <label for="deadline">Deadline:</label>
-              <input
-                id="deadline"
-                v-model="deadline"
-                type="date"
-              />
+              <input id="deadline" v-model="deadline" type="date" />
             </div>
 
             <div class="form-group">
@@ -146,32 +136,27 @@ export default {
         </div>
 
         <div class="filter-buttons">
-          <button
-          type="button"
-          class="filter-button"
-          :class="{ active: filter === 'Alla' }"
-          @click="filter = 'Alla'"
-          >
+          <button type="button" class="filter-button" :class="{ active: filter === 'Alla' }" @click="filter = 'Alla'">
             Alla
-        </button>
+          </button>
 
-        <button
-        type="button"
-        class="filter-button"
-        :class="{ active: filter === 'Ej klara' }"
-        @click="filter = 'Ej klara'"
-        >
-          Ej klara
-        </button>
+          <button type="button" class="filter-button" :class="{ active: filter === 'Ej klara' }"
+            @click="filter = 'Ej klara'">
+            Ej klara
+          </button>
 
-        <button
-        type="button"
-        class="filter-button"
-        :class="{ active: filter === 'Klara' }"
-        @click="filter = 'Klara'"
-        >
-          Klara
-        </button>
+          <button type="button" class="filter-button" :class="{ active: filter === 'Klara' }" @click="filter = 'Klara'">
+            Klara
+          </button>
+        </div>
+
+        <div class="sort-section">
+          <label for="sortOrder">Sortera efter deadline:</label>
+
+          <select id="sortOrder" v-model="sortOrder">
+            <option value="Tidigast">Tidigast</option>
+            <option value="Senast">Senast</option>
+          </select>
         </div>
 
         <div v-if="filteredTasks.length === 0" class="empty-list">
@@ -180,46 +165,33 @@ export default {
         </div>
 
         <div v-else class="tasks-list">
-          <div
-          v-for="task in filteredTasks"
-          :key="task.id"
-          class="task-card"
-          :class="{
+          <div v-for="task in filteredTasks" :key="task.id" class="task-card" :class="{
             completed: task.completed,
             'priority-high': task.priority === 'Hög',
             'priority-medium': task.priority === 'Medel',
             'priority-low': task.priority === 'Låg'
-          }"
-          >
-          <h3>{{ task.name }}</h3>
-          <p>
-            <strong>Kurs:</strong> {{ task.course }}
-          </p>
+          }">
+            <h3>{{ task.name }}</h3>
+            <p>
+              <strong>Kurs:</strong> {{ task.course }}
+            </p>
 
-          <p>
-            <strong>Deadline:</strong> {{ task.deadline }}
-          </p>
+            <p>
+              <strong>Deadline:</strong> {{ task.deadline }}
+            </p>
 
-          <p>
-            <strong>Prioritet:</strong> {{ task.priority }}
-          </p>
+            <p>
+              <strong>Prioritet:</strong> {{ task.priority }}
+            </p>
 
-          <button
-          type="button"
-          class="complete-button"
-          @click="toggleTask(task.id)"
-          >
-            {{ task.completed ? 'Markera som ej klar' : 'Markera som klar' }}
+            <button type="button" class="complete-button" @click="toggleTask(task.id)">
+              {{ task.completed ? 'Markera som ej klar' : 'Markera som klar' }}
 
-          </button>
+            </button>
 
-          <button
-          type="button"
-          class="delete-button"
-          @click="removeTask(task.id)"
-          >
-            Ta bort uppgiften
-          </button>
+            <button type="button" class="delete-button" @click="removeTask(task.id)">
+              Ta bort uppgiften
+            </button>
           </div>
         </div>
       </section>

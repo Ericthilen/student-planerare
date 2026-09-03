@@ -137,6 +137,17 @@ select:focus {
     border-color: #2563eb;
 }
 
+.sort-section {
+    margin-bottom: 20px;
+    max-width: 300px;
+}
+
+.sort-section label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
 .empty-list {
     text-align: center;
     padding: 30px;
